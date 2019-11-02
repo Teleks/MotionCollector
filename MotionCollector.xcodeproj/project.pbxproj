@@ -18,7 +18,6 @@
 		DC39DF702071FE0200B34F13 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC39DF6F2071FE0200B34F13 /* NotificationController.swift */; };
 		DC39DF722071FE0200B34F13 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC39DF712071FE0200B34F13 /* ComplicationController.swift */; };
 		DC39DF742071FE0200B34F13 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC39DF732071FE0200B34F13 /* Assets.xcassets */; };
-		DC39DF792071FE0200B34F13 /* MotionCollectorWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = DC39DF5A2071FE0100B34F13 /* MotionCollectorWatch.app */; };
 		DC646AC120880BC100421F97 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC646AC020880BC100421F97 /* HealthKit.framework */; };
 		DC646AC320880BDF00421F97 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC646AC220880BDF00421F97 /* HealthKit.framework */; };
 		DC6A3F6B208F853800B12C60 /* Characteristic+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6A3F61208F853800B12C60 /* Characteristic+CoreDataClass.swift */; };
@@ -55,13 +54,6 @@
 			remoteGlobalIDString = DC39DF652071FE0200B34F13;
 			remoteInfo = "MotionCollectorWatch Extension";
 		};
-		DC39DF772071FE0200B34F13 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DCB7BBE5203A5688001F1E9F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DC39DF592071FE0100B34F13;
-			remoteInfo = MotionCollectorWatch;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -74,17 +66,6 @@
 				DC39DF672071FE0200B34F13 /* MotionCollectorWatch Extension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DC39DF812071FE0200B34F13 /* Embed Watch Content */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
-			dstSubfolderSpec = 16;
-			files = (
-				DC39DF792071FE0200B34F13 /* MotionCollectorWatch.app in Embed Watch Content */,
-			);
-			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -328,12 +309,10 @@
 				DCB7BBE9203A5688001F1E9F /* Sources */,
 				DCB7BBEA203A5688001F1E9F /* Frameworks */,
 				DCB7BBEB203A5688001F1E9F /* Resources */,
-				DC39DF812071FE0200B34F13 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				DC39DF782071FE0200B34F13 /* PBXTargetDependency */,
 			);
 			name = MotionCollector;
 			productName = DataCollector;
@@ -477,11 +456,6 @@
 			isa = PBXTargetDependency;
 			target = DC39DF652071FE0200B34F13 /* MotionCollectorWatch Extension */;
 			targetProxy = DC39DF682071FE0200B34F13 /* PBXContainerItemProxy */;
-		};
-		DC39DF782071FE0200B34F13 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DC39DF592071FE0100B34F13 /* MotionCollectorWatch */;
-			targetProxy = DC39DF772071FE0200B34F13 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -706,11 +680,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MotionCollector/MotionCollector.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F2X9TX4X64;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/MotionCollector/Sources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = delexa1.MotionCollector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -722,11 +697,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MotionCollector/MotionCollector.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F2X9TX4X64;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/MotionCollector/Sources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = delexa1.MotionCollector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

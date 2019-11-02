@@ -76,6 +76,9 @@ class CollectingDataVC: UIViewController, WCSessionDelegate, SettingsTableVCDele
     // For motion getting
     let motion = CMMotionManager()
     var motionUpdateTimer = Timer()
+
+    let altimeter = CMAltimeter()
+    var lastPressure: Double?
     
     
     // MARK - Starting app
@@ -139,6 +142,12 @@ class CollectingDataVC: UIViewController, WCSessionDelegate, SettingsTableVCDele
             self.motion.startGyroUpdates()
             self.motion.startMagnetometerUpdates()
             
+            if CMAltimeter.isRelativeAltitudeAvailable() {
+                self.altimeter.startRelativeAltitudeUpdates(to: OperationQueue.main) { [weak self] (data, error) in
+                    self?.lastPressure = data?.pressure.doubleValue ?? 0.0
+                }
+            }
+            
             // Configure a timer to fetch the data.
             self.motionUpdateTimer = Timer.scheduledTimer(withTimeInterval: 1.0/Double (currentFrequency), repeats: true, block: { (timer1) in
                 // Get the motion data.
@@ -180,8 +189,9 @@ class CollectingDataVC: UIViewController, WCSessionDelegate, SettingsTableVCDele
                     sensorOutput.magY = MagY
                     sensorOutput.magZ = MagZ
                     
-                    self.sensorOutputs.append(sensorOutput)
+                    sensorOutput.pressure = self.lastPressure
                     
+                    self.sensorOutputs.append(sensorOutput)
                 }
             }
             )}
@@ -193,6 +203,10 @@ class CollectingDataVC: UIViewController, WCSessionDelegate, SettingsTableVCDele
         self.motion.stopGyroUpdates()
         self.motion.stopAccelerometerUpdates()
         self.motion.stopMagnetometerUpdates()
+        
+        if CMAltimeter.isRelativeAltitudeAvailable() {
+            self.altimeter.stopRelativeAltitudeUpdates()
+        }
     }
     
     func returnCurrentTime() -> String {
@@ -272,12 +286,18 @@ class CollectingDataVC: UIViewController, WCSessionDelegate, SettingsTableVCDele
             characteristicMag.z = sensorOutput.magZ!
             characteristicMag.toCharacteristicName = self.characteristicsNames[2]
             
+            let characteristicPress = Characteristic (context:context)
+            characteristicPress.x = sensorOutput.pressure ?? 0.0
+            characteristicPress.y = sensorOutput.pressure ?? 0.0
+            characteristicPress.z = sensorOutput.pressure ?? 0.0
+            characteristicPress.toCharacteristicName = self.characteristicsNames[3]
             
             let sensorData = SensorData(context: context)
             sensorData.timeStamp = sensorOutput.timeStamp! as NSDate
             sensorData.addToToCharacteristic(characteristicGyro)
             sensorData.addToToCharacteristic(characteristicAcc)
             sensorData.addToToCharacteristic(characteristicMag)
+            sensorData.addToToCharacteristic(characteristicPress)
             sensorData.toSensor = sensors[0]
             
             self.currentSession?.addToToSensorData(sensorData)
@@ -371,6 +391,8 @@ class CollectingDataVC: UIViewController, WCSessionDelegate, SettingsTableVCDele
         characteristicName2.name = "Acc"
         let characteristicName3 = CharacteristicName (context:context)
         characteristicName3.name = "Mag"
+        let characteristicName4 = CharacteristicName (context:context)
+        characteristicName4.name = "Press"
         
         
         let characteristic1 = Characteristic (context:context)
@@ -418,6 +440,21 @@ class CollectingDataVC: UIViewController, WCSessionDelegate, SettingsTableVCDele
         characteristic3b.y = 0.3
         characteristic3b.z = 0.3
         characteristic3b.toCharacteristicName = characteristicName3
+        let characteristic1c = Characteristic (context:context)
+        characteristic1c.x = 0.1
+        characteristic1c.y = 0.1
+        characteristic1c.z = 0.1
+        characteristic1c.toCharacteristicName = characteristicName4
+        let characteristic2c = Characteristic (context:context)
+        characteristic2c.x = 0.2
+        characteristic2c.y = 0.2
+        characteristic2c.z = 0.2
+        characteristic2c.toCharacteristicName = characteristicName4
+        let characteristic3c = Characteristic (context:context)
+        characteristic3c.x = 0.3
+        characteristic3c.y = 0.3
+        characteristic3c.z = 0.3
+        characteristic3c.toCharacteristicName = characteristicName4
         
         
         let sensorData1 = SensorData(context: context)
@@ -438,6 +475,12 @@ class CollectingDataVC: UIViewController, WCSessionDelegate, SettingsTableVCDele
         sensorData3.addToToCharacteristic(characteristic2b)
         sensorData3.addToToCharacteristic(characteristic3b)
         
+        let sensorData4 = SensorData(context: context)
+        sensorData4.timeStamp = NSDate()
+        sensorData4.addToToCharacteristic(characteristic1c)
+        sensorData4.addToToCharacteristic(characteristic2c)
+        sensorData4.addToToCharacteristic(characteristic3c)
+        
         
         let session1 = Session(context: context)
         session1.id = 1
@@ -447,6 +490,7 @@ class CollectingDataVC: UIViewController, WCSessionDelegate, SettingsTableVCDele
         session1.addToToSensorData(sensorData1)
         session1.addToToSensorData(sensorData2)
         session1.addToToSensorData(sensorData3)
+        session1.addToToSensorData(sensorData4)
         
         let session2 = Session(context: context)
         session2.id = 2
@@ -505,13 +549,15 @@ class CollectingDataVC: UIViewController, WCSessionDelegate, SettingsTableVCDele
         do {
             let records = try context.fetch(fetchRequest) as! [CharacteristicName]
             
-            if records.count != 3 {
+            if records.count != 4 {
                 let characteristicName1 = CharacteristicName (context:context)
                 characteristicName1.name = "Gyro"
                 let characteristicName2 = CharacteristicName (context:context)
                 characteristicName2.name = "Acc"
                 let characteristicName3 = CharacteristicName (context:context)
                 characteristicName3.name = "Mag"
+                let characteristicName4 = CharacteristicName (context:context)
+                characteristicName4.name = "Press"
                 ad.saveContext()
             }
             

@@ -211,7 +211,7 @@ class ExportDataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         let fileName = "Motion-sessions_\(sessionDate).csv"
         let path = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
-        var csvText = "SessionID,SessionDate,SessionDuration,SessionFrequency,RecordID,Timestamp,timeIntervalSince1970,GyroX,GyroY,GyroZ,AccX,AccY,AccZ,MagX,MagY,MagZ,WatchTimestamp,WatchtImeIntervalSince1970,WatchGyroX,WatchGyroY,WatchGyroZ,WatchAccX,WatchAccY,WatchAccZ\n"
+        var csvText = "SessionID,SessionDate,SessionDuration,SessionFrequency,RecordID,Timestamp,timeIntervalSince1970,GyroX,GyroY,GyroZ,AccX,AccY,AccZ,MagX,MagY,MagZ,Pressure,WatchTimestamp,WatchtImeIntervalSince1970,WatchGyroX,WatchGyroY,WatchGyroZ,WatchAccX,WatchAccY,WatchAccZ\n"
         
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSS"
@@ -262,7 +262,7 @@ class ExportDataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                     var sensorsInfo2 = ""
                     
                     if  i < SensorOutputs1.count {
-                        sensorsInfo1 = "\(df.string(from: (SensorOutputs1[i].timeStamp as Date?)!)),\(String(describing: SensorOutputs1[i].timeStamp!.timeIntervalSince1970)),\(String(describing: SensorOutputs1[i].gyroX!)),\(String(describing: SensorOutputs1[i].gyroY!)),\(String(describing: SensorOutputs1[i].gyroZ!)),\(String(describing: SensorOutputs1[i].accX!)),\(String(describing: SensorOutputs1[i].accY!)),\(String(describing: SensorOutputs1[i].accZ!)),\(String(describing: SensorOutputs1[i].magX!)),\(String(describing: SensorOutputs1[i].magY!)),\(String(describing: SensorOutputs1[i].magZ!)),"
+                        sensorsInfo1 = "\(df.string(from: (SensorOutputs1[i].timeStamp as Date?)!)),\(String(describing: SensorOutputs1[i].timeStamp!.timeIntervalSince1970)),\(String(describing: SensorOutputs1[i].gyroX!)),\(String(describing: SensorOutputs1[i].gyroY!)),\(String(describing: SensorOutputs1[i].gyroZ!)),\(String(describing: SensorOutputs1[i].accX!)),\(String(describing: SensorOutputs1[i].accY!)),\(String(describing: SensorOutputs1[i].accZ!)),\(String(describing: SensorOutputs1[i].magX!)),\(String(describing: SensorOutputs1[i].magY!)),\(String(describing: SensorOutputs1[i].magZ!)),\(String(describing: SensorOutputs1[i].pressure ?? 0.0)),"
                     }
                     
                     if i < SensorOutputs2.count {
@@ -305,6 +305,8 @@ class ExportDataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         if let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName) as URL? {
             let objectsToShare = [fileURL]
             let activityController = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            activityController.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem!
+            
             let excludedActivities = [UIActivityType.postToFlickr, UIActivityType.postToWeibo, UIActivityType.message, UIActivityType.mail, UIActivityType.print, UIActivityType.copyToPasteboard, UIActivityType.assignToContact, UIActivityType.saveToCameraRoll, UIActivityType.addToReadingList, UIActivityType.postToFlickr, UIActivityType.postToVimeo, UIActivityType.postToTencentWeibo]
             
             activityController.excludedActivityTypes = excludedActivities
@@ -336,6 +338,8 @@ class ExportDataVC: UIViewController, UITableViewDelegate, UITableViewDataSource
                 sensorOutput.magX = characteristic.x
                 sensorOutput.magY = characteristic.y
                 sensorOutput.magZ = characteristic.z
+            } else if characteristic.toCharacteristicName?.name == "Press" {
+                sensorOutput.pressure = characteristic.x
             }
             
         }

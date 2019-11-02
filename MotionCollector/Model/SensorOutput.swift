@@ -25,5 +25,7 @@ class SensorOutput: Codable {
     var magY: Double?
     var magZ: Double?
     
+    var pressure: Double?
+    
     init() {}
 }
