@@ -8,11 +8,12 @@
 
 import UIKit
 import CoreMotion
+import CoreLocation
 import CoreData
 import WatchConnectivity
 
 
-class CollectingDataVC: UIViewController, WCSessionDelegate, SettingsTableVCDelegate, RecordIDVCDelegate {
+class CollectingDataVC: UIViewController, WCSessionDelegate, SettingsTableVCDelegate, RecordIDVCDelegate, GeoLocationCollectorDelegate {
     
     
     // Statuses
@@ -195,6 +196,10 @@ class CollectingDataVC: UIViewController, WCSessionDelegate, SettingsTableVCDele
                 }
             }
             )}
+        
+        let geoCollector = GeoLocationCollector.default
+        geoCollector.delegate = self
+        geoCollector.start()
     }
     
     func stopGettingData() {
@@ -778,5 +783,67 @@ class CollectingDataVC: UIViewController, WCSessionDelegate, SettingsTableVCDele
     }
     
     func sessionDidDeactivate(_ session: WCSession) {
+    }
+    
+    
+    // MARK: - GeoLocationCollectorDelegate
+    
+    private let df: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "dd.MM.yyyy_HH:mm:ss"
+        
+        return df
+    } ()
+    
+    private var gpsRecordDate = Date()
+    
+    func geoLocationCollectorDidStart(_ collector: GeoLocationCollector) {
+        gpsRecordDate = Date()
+    }
+    
+    func geoLocationCollectorDidStop(_ collector: GeoLocationCollector) {
+        
+    }
+    
+    func geoLocationCollector(_ collector: GeoLocationCollector, didRecieveHeading heading: CLHeading) {
+        let url = getDocumentsDirectory().appendingPathComponent("headings_\(df.string(from: gpsRecordDate))")
+        
+        let rec = "\(heading.headingAccuracy):\(heading.magneticHeading),\(heading.trueHeading);\(heading.timestamp)"
+        
+        guard let data = rec.data(using: .utf8) else { return }
+        
+        if FileManager.default.fileExists(atPath: url.path) {
+            guard let handle = try? FileHandle(forWritingTo: url) else { return }
+            
+            handle.seekToEndOfFile()
+            handle.write(data)
+            handle.closeFile()
+        } else {
+            do {
+                try data.write(to: url)
+            } catch {}
+        }
+    }
+    
+    func geoLocationCollector(_ collector: GeoLocationCollector, didRecieveLocations locations: [CLLocation]) {
+        let url = getDocumentsDirectory().appendingPathComponent("locations_\(df.string(from: gpsRecordDate))")
+        
+        let recs = locations.map { (loc) -> String in
+            return "\(loc.horizontalAccuracy),\(loc.verticalAccuracy):\(loc.coordinate.latitude),\(loc.coordinate.longitude),\(loc.altitude);\(loc.course),\(loc.speed);\(loc.timestamp)"
+        }
+        
+        guard let data = recs.joined(separator: "\n").data(using: .utf8) else { return }
+        
+        if FileManager.default.fileExists(atPath: url.path) {
+            guard let handle = try? FileHandle(forWritingTo: url) else { return }
+            
+            handle.seekToEndOfFile()
+            handle.write(data)
+            handle.closeFile()
+        } else {
+            do {
+                try data.write(to: url)
+            } catch {}
+        }
     }
 }

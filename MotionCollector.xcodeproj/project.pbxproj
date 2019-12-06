@@ -44,6 +44,7 @@
 		DCE4CC65206E0A620043180A /* RecordIDVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE4CC64206E0A620043180A /* RecordIDVC.swift */; };
 		DCE4CC67206E1D750043180A /* SessionIDCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE4CC66206E1D750043180A /* SessionIDCell.swift */; };
 		DCF103EE2046BB17005B63C5 /* SettingsTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF103ED2046BB17005B63C5 /* SettingsTableVC.swift */; };
+		E6BEFA03239A6646007C0769 /* GeoLocationCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6BEFA02239A6646007C0769 /* GeoLocationCollector.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +115,7 @@
 		DCE4CC64206E0A620043180A /* RecordIDVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordIDVC.swift; sourceTree = "<group>"; };
 		DCE4CC66206E1D750043180A /* SessionIDCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionIDCell.swift; sourceTree = "<group>"; };
 		DCF103ED2046BB17005B63C5 /* SettingsTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableVC.swift; sourceTree = "<group>"; };
+		E6BEFA02239A6646007C0769 /* GeoLocationCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoLocationCollector.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +220,7 @@
 		DCB7BC05203A582F001F1E9F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E6BEFA02239A6646007C0769 /* GeoLocationCollector.swift */,
 				DC119ECD204ABFA00035ED8F /* SensorOutput.swift */,
 				DC82AAC0208EDAFE00A30939 /* SessionContainer.swift */,
 				DCA2827620892D7B0078CC3E /* SessionType.swift */,
@@ -347,7 +350,7 @@
 					};
 					DCB7BBEC203A5688001F1E9F = {
 						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 1;
@@ -426,6 +429,7 @@
 			files = (
 				DC6A3F70208F853800B12C60 /* Session+CoreDataProperties.swift in Sources */,
 				DCB7BC0C203A6321001F1E9F /* ExportDataVC.swift in Sources */,
+				E6BEFA03239A6646007C0769 /* GeoLocationCollector.swift in Sources */,
 				DC972306204150C0002047EF /* ItemSessionSessionCell.swift in Sources */,
 				DC6A3F73208F853800B12C60 /* CharacteristicName+CoreDataClass.swift in Sources */,
 				DCE4CC65206E0A620043180A /* RecordIDVC.swift in Sources */,
@@ -679,13 +683,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MotionCollector/MotionCollector.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = NWAXZVJAA5;
 				INFOPLIST_FILE = "$(SRCROOT)/MotionCollector/Sources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = delexa1.MotionCollector;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.omega-r.GCTestApp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "Dev: GCTest";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -696,13 +700,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MotionCollector/MotionCollector.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = NWAXZVJAA5;
 				INFOPLIST_FILE = "$(SRCROOT)/MotionCollector/Sources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = delexa1.MotionCollector;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.omega-r.GCTestApp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "AppStore: GCTest";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
